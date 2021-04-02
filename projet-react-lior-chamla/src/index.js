@@ -12,7 +12,8 @@ class App extends React.Component {
       { id: 3, nom: "Ines Marquillier" },
       { id: 4, nom: "Elise Marquillier" },
       { id: 5, nom: "Hugo Marquillier" }
-    ]
+    ],
+    nouveauClient: 'Jeanne'
   };
 
   handleDelete = (id) => {
@@ -25,12 +26,7 @@ class App extends React.Component {
     clients.splice(index, 1);
     // Le setstate permet de mettre à jour un élément
     this.setState({ clients: clients });
-  }
-
-  // delClick = () => {
-  //   // alert("Bonjour à vous");
-  //   //this.setState({compteur: this.state.compteur + 1});
-  //   //console.log(this.state);
+  };
 
   //   // la methode slice permet de créer une copie d'un tableau
   //   const clients = this.state.clients.shift();
@@ -38,6 +34,25 @@ class App extends React.Component {
   //   //le setState permet de changer l'etat d'un composant
   //   this.setState({clients: clients});
   // }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    
+    const id = new Date().getTime();
+    const nom = this.state.nouveauClient;
+
+    const client = {id: id, nom: nom}
+
+    const clients = this.state.clients.slice();
+    clients.push(client);
+
+    this.setState({ clients: clients, nouveauClient: ''});
+  }
+
+  handleChange = (event) => {
+    const value = event.currentTarget.value;
+    this.setState({ nouveauClient: value });
+  }
 
   render() {
     const title = "Liste des clients"
@@ -52,8 +67,9 @@ class App extends React.Component {
             </li>
           ))}
         </ul>
-        <form>
-          <input type="text" placeholder="Ajouter un client" />
+        <form onSubmit={this.handleSubmit}>
+          <input value={this.state.nouveauClient} onChange={this.handleChange} type="text" placeholder="Ajouter un client" />
+          {/* <input ref={this.clientInput} type="text" placeholder="Ajouter un client" /> */}
           <button>Confirmer</button>
         </form>
       </div>
