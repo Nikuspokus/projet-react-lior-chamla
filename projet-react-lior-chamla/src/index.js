@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Client from './Client'
+import Client from './Client';
+import ClientForm from './ClientForm';
 
 import "./styles.css";
 
@@ -13,8 +14,7 @@ class App extends React.Component {
       { id: 3, nom: "Ines Marquillier" },
       { id: 4, nom: "Elise Marquillier" },
       { id: 5, nom: "Hugo Marquillier" }
-    ],
-    nouveauClient: ''
+    ]
   };
 
   handleDelete = (id) => {
@@ -36,31 +36,20 @@ class App extends React.Component {
   //   this.setState({clients: clients});
   // }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    
-    const id = new Date().getTime();
-    const nom = this.state.nouveauClient;
+  handleAdd = client => {
 
-    const client = {id: id, nom: nom}
-    // on peut aussi simplifier la const client comme ceci = const client = {id, nom}
-
+        // on peut aussi simplifier la const client comme ceci = const client = {id, nom}
     const clients = this.state.clients.slice();
-
     // ... = spread operator
-    // const clients = [...this.state.clients];
-    clients.push(client);
+        // const clients = [...this.state.clients];
+        clients.push(client);
 
-    this.setState({ clients: clients, nouveauClient: ''});
-  }
-
-  handleChange = (event) => {
-    const value = event.currentTarget.value;
-    this.setState({ nouveauClient: value });
-  }
+        this.setState({ clients: clients});
+    };
+  
 
   render() {
-    const title = "Liste des clients"
+    const title = "Liste des clients";
 
     return (
       <div>
@@ -70,11 +59,7 @@ class App extends React.Component {
             <Client details={client} onDelete={this.handleDelete} />
           ))}
         </ul>
-        <form onSubmit={this.handleSubmit}>
-          <input value={this.state.nouveauClient} onChange={this.handleChange} type="text" placeholder="Ajouter un client" />
-          {/* <input ref={this.clientInput} type="text" placeholder="Ajouter un client" /> */}
-          <button>Confirmer</button>
-        </form>
+        <ClientForm onClientAdd={this.handleAdd}/>
       </div>
     );
   }
