@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Client from './Client'
 
 import "./styles.css";
 
@@ -13,7 +14,7 @@ class App extends React.Component {
       { id: 4, nom: "Elise Marquillier" },
       { id: 5, nom: "Hugo Marquillier" }
     ],
-    nouveauClient: 'Jeanne'
+    nouveauClient: ''
   };
 
   handleDelete = (id) => {
@@ -42,8 +43,12 @@ class App extends React.Component {
     const nom = this.state.nouveauClient;
 
     const client = {id: id, nom: nom}
+    // on peut aussi simplifier la const client comme ceci = const client = {id, nom}
 
     const clients = this.state.clients.slice();
+
+    // ... = spread operator
+    // const clients = [...this.state.clients];
     clients.push(client);
 
     this.setState({ clients: clients, nouveauClient: ''});
@@ -62,9 +67,7 @@ class App extends React.Component {
         <h1>{title}</h1>
         <ul>
           {this.state.clients.map(client => (
-            <li>
-              {client.nom} <button onClick={() => this.handleDelete(client.id)}>X</button>
-            </li>
+            <Client details={client} onDelete={this.handleDelete} />
           ))}
         </ul>
         <form onSubmit={this.handleSubmit}>
